@@ -1,1 +1,1 @@
-## alguna descripción del ambiente
+Cosas del README
