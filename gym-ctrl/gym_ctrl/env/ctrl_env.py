@@ -1,3 +1,4 @@
+from weakref import ref
 import gym
 import numpy as np
 from gym import logger
@@ -165,3 +166,29 @@ class CtrlEnv(gym.Env):
         ax.legend(bbox_to_anchor=(1.04,1), borderaxespad=0)
         ax.grid()
         return ax
+
+if __name__=='__main__':
+  ## Test
+  import gym_ctrl
+  env = gym.make('ctrl-v0')
+  obs = env.reset(x0=0)
+
+  print(env.observation_space)
+  print(env.action_space)
+  print(env.action_space.sample())
+
+  n_steps = 700
+  for step in range(n_steps):
+    action = env.action_space.sample()
+    print("Step {} → action {}".format(step + 1, action))
+    obs, reward, done, info = env.step(action)
+    # print('obs=', obs, 'reward=', reward, 'done=', done)
+    
+    if done:
+      print("Goal reached!", "reward=", reward, f'done:{done}')
+      break
+
+  fig, ax = plt.subplots()
+  env.plot_info(ax, info, 'Test', 'Time(s)', u=False)
+  fig.show()
+  input('ok?')
