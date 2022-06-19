@@ -11,7 +11,7 @@ def random_value(amplitud):
   random_value = norm_value * amplitud
   return random_value
 
-class CustomEnv(gym.Env):
+class CtrlEnv(gym.Env):
     def __init__(self, x0 = random_value(3), ref = random_value(3), T=10):
     # def __init__(self, x0 = 0, ref = 1, T=10):
         super(CustomEnv, self).__init__()
