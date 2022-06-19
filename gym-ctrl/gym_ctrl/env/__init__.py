@@ -1,1 +1,1 @@
-from gym_env.env.ctrl_env import CtrlEnv
+from gym_ctrl.env.ctrl_env import CtrlEnv
