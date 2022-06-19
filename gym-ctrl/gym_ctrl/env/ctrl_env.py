@@ -14,7 +14,7 @@ def random_value(amplitud):
 class CtrlEnv(gym.Env):
     def __init__(self, x0 = random_value(3), ref = random_value(3), T=10):
     # def __init__(self, x0 = 0, ref = 1, T=10):
-        super(CustomEnv, self).__init__()
+        super(CtrlEnv, self).__init__()
         self.mdel_param = {'m': 1, 'b':1, 'k':1}
         self.scale_action = 5
 
