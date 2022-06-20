@@ -80,7 +80,7 @@ class CtrlEnv(gym.Env):
         done, x_limit = self.done(x1, t)
         if x_limit:
           reward = -1e9
-          self.r = np.vstack((self.r, reward))
+          self.r = np.vstack((self.r[:-1], reward))
         info = self.info(error, reward)
 
         self.epoch+=1
