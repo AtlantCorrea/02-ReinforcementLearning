@@ -119,7 +119,8 @@ class CtrlEnv(gym.Env):
                 'error': error,
                 'epoch': self.epoch,
                 # 'episode':{'r':reward,'l':self.epoch}}
-                'episode':{'r':3,'l':4}}
+                # 'episode':{'r':3,'l':4}
+                }
         return info
 
     def get_error(self, obs):
