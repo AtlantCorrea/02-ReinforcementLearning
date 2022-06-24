@@ -17,8 +17,8 @@ for episode in range(episodes):
         if done:
             print("Goal reached!", "reward=", reward, f'done:{done}')
             break
-
-    fig, ax = plt.subplots()
-    env.plot_info(ax, info, 'Test', 'Time(s)', u=False)
-    fig.show()
+    env.render()
+    # fig, ax = plt.subplots()
+    # env.plot_info(ax, info, 'Test', 'Time(s)', u=False)
+    # fig.show()
 input('ok?')

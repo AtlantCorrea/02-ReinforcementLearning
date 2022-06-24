@@ -88,7 +88,9 @@ class CtrlEnv(gym.Env):
         return np.array(observation, dtype=np.float32), reward, done, info
 
     def render(self):
-        print('render estaba implementado pero lo eliminé, buscar en versiones 3.0')
+      fig, ax = plt.subplots()
+      self.plot_info(ax, self.plot, 'Test', 'Time(s)', u=False)
+      fig.show()
 
     def close (self):
         pass
@@ -138,9 +140,7 @@ class CtrlEnv(gym.Env):
         return [dx1dt, dx2dt]
 
 
-    def plot_info(self, ax, info = None, title='', xlabel='', x=True, x_dot=True, u=True, r=True, error=True, ref=True):
-        if info is None:
-          info = self.plot
+    def plot_info(self, ax, info, title='', xlabel='', x=True, x_dot=True, u=True, r=True, error=True, ref=True):
         time = info['t']
         if x:
           color = mcolors.TABLEAU_COLORS['tab:olive']
