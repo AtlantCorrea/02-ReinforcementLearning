@@ -3,9 +3,9 @@ import gym
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
 import os
 from datetime import datetime
+from ctrl_env.ctrl_env import CtrlEnv
 
 now = datetime.now().strftime("%b%d_%H%Mhrs")
-
 
 rl_model = 'TD3'
 models_dir = f'models/{rl_model}_{now}'
@@ -17,7 +17,7 @@ if not os.path.exists(models_dir):
 if not os.path.exists(logdir):
     os.makedirs(logdir)
 
-env = gym.make('Pendulum-v1')
+env = CtrlEnv()
 env.reset()
 
 if rl_model == 'SAC':
@@ -43,7 +43,6 @@ TIMESTEPS = 10000
 for i in range(30):
     model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=f'{rl_model}_{now}')
     model.save(f'{models_dir}/{TIMESTEPS*i}')
-
-
+    
 env.close()
 
