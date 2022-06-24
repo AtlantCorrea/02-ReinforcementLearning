@@ -1,4 +1,3 @@
-from weakref import ref
 import gym
 import numpy as np
 from gym import logger
@@ -29,6 +28,7 @@ class CtrlEnv(gym.Env):
         self.t = np.array([0])
         self.r = np.array([-np.absolute(self.error)])
         self.dt = 20/1000
+        self.plot = None
 
         self.x_threshold = 1.5 * np.absolute(self.ref) 
 
@@ -82,6 +82,7 @@ class CtrlEnv(gym.Env):
           reward = -1e9
           self.r = np.vstack((self.r[:-1], reward))
         info = self.info(error, reward)
+        self.plot = info
 
         self.epoch+=1
         return np.array(observation, dtype=np.float32), reward, done, info
@@ -137,7 +138,9 @@ class CtrlEnv(gym.Env):
         return [dx1dt, dx2dt]
 
 
-    def plot_info(self, ax, info, title='', xlabel='', x=True, x_dot=True, u=True, r=True, error=True, ref=True):
+    def plot_info(self, ax, info = None, title='', xlabel='', x=True, x_dot=True, u=True, r=True, error=True, ref=True):
+        if info is None:
+          info = self.plot
         time = info['t']
         if x:
           color = mcolors.TABLEAU_COLORS['tab:olive']
