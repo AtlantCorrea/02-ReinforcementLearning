@@ -1,12 +1,15 @@
 from binascii import rlecode_hqx
+import random
+from weakref import ref
 import gym
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
+from ctrl_env.ctrl_env import CtrlEnv
 
-env = gym.make('Pendulum-v1')
+env = CtrlEnv()
 env.reset()
 
-rl_model = input("Modelo: ")
-rl_step = input("Step: ")
+rl_model = 'SAC_Jun23_2342hrs' #input("Modelo: ")
+rl_step = '140000' #input("Step: ")
 
 models_dir = f'models/{rl_model}'
 model_path = f'{models_dir}/{rl_step}.zip'
@@ -29,13 +32,15 @@ else:
 # elif rl_model == 'ACKTR':
 #     model = ACKTR.load(model_path, env=env)
 
-episides = 10
+episides = 5
 for ep in range(episides):
-    obs = env.reset()
+    obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
     done = False
     for i in range(200):
-        env.render()
         action, _ = model.predict(obs)
         obs, reward, done, info = env.step(action)
+    if done:
+        break
+    env.render()
 
-env.close()
+input('ok?')
