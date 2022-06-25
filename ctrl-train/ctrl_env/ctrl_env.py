@@ -79,7 +79,7 @@ class CtrlEnv(gym.Env):
         # Done & Info
         done, x_limit = self.done(x1, t)
         if x_limit:
-          reward = -1e9
+          reward = -2000
           self.r = np.vstack((self.r[:-1], reward))
         info = self.info(error, reward)
         self.plot = info
@@ -104,11 +104,12 @@ class CtrlEnv(gym.Env):
         return sol_array[-1]
 
     def reward(self, error, t):
-        reward = -np.absolute(error) * (1 + float(t/2)**1.2) 
+        reward = -np.absolute(error) * (1 + float(t/2)**1.2)
         return reward
 
     def done(self, x1, t):
-        x_limit = bool( np.absolute(x1) > self.x_threshold)
+        # x_limit = bool( np.absolute(x1) > self.x_threshold)
+        x_limit = bool( np.absolute(self.get_error(x1)) > np.absolute(self.get_error(self.x0)*1.5))
         t_limit = bool( t > self.T)
         done = x_limit or t_limit
         return done, x_limit
