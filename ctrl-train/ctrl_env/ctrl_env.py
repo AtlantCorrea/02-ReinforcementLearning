@@ -90,6 +90,7 @@ class CtrlEnv(gym.Env):
     def render(self):
       fig, ax = plt.subplots()
       self.plot_info(ax, self.plot, 'Test', 'Time(s)', u=False)
+      fig.tight_layout()
       fig.show()
 
     def close (self):

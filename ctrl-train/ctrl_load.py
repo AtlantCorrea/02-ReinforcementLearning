@@ -9,7 +9,7 @@ env = CtrlEnv()
 env.reset()
 
 rl_model = 'SAC_Jun23_2342hrs' #input("Modelo: ")
-rl_step = '140000' #input("Step: ")
+rl_step = '290000' #input("Step: ")
 
 models_dir = f'models/{rl_model}'
 model_path = f'{models_dir}/{rl_step}.zip'
@@ -36,11 +36,11 @@ episides = 5
 for ep in range(episides):
     obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
     done = False
-    for i in range(200):
+    for i in range(1000):
         action, _ = model.predict(obs)
         obs, reward, done, info = env.step(action)
     if done:
-        break
-    env.render()
+        # break
+        env.render()
 
-input('ok?')
+        input('ok?')
