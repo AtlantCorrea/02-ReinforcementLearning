@@ -8,10 +8,10 @@ from ctrl_env.ctrl_env import CtrlEnv
 env = CtrlEnv()
 env.reset()
 
-rl_model = 'SAC_Jun23_2342hrs' #input("Modelo: ")
-rl_step = '290000' #input("Step: ")
+rl_model = input("Modelo: ")
+rl_step = input("Step: ")
 
-models_dir = f'models/{rl_model}'
+models_dir = f'Jun25_models/{rl_model}'
 model_path = f'{models_dir}/{rl_step}.zip'
 
 if 'SAC' in rl_model:
