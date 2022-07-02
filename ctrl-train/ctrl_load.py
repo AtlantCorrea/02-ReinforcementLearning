@@ -4,6 +4,7 @@ from weakref import ref
 import gym
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
 from ctrl_env.ctrl_env import CtrlEnv
+import matplotlib.pyplot as plt
 
 env = CtrlEnv()
 env.reset()
@@ -32,15 +33,16 @@ else:
 # elif rl_model == 'ACKTR':
 #     model = ACKTR.load(model_path, env=env)
 
-episides = 5
-for ep in range(episides):
-    obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
+episides = 2
+for ep in range(-episides, episides+1):
+    obs = env.reset(x0 = ep)
+    # obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
     done = False
-    for i in range(1000):
+    for i in range(100):
         action, _ = model.predict(obs)
         obs, reward, done, info = env.step(action)
     if done:
         # break
-        env.render()
-
-        input('ok?')
+        pass
+    env.render()
+    input('ok?')
