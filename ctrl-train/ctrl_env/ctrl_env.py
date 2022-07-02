@@ -7,12 +7,14 @@ from scipy.integrate import odeint
 import matplotlib.colors as mcolors
 
 def random_value(amplitud):
-  norm_value = (np.random.rand(1)[0]-0.5)*2
-  random_value = norm_value * amplitud
+  random_value = 0
+  while random_value == 0:
+    norm_value = (np.random.rand(1)[0]-0.5)*2
+    random_value = norm_value * amplitud
   return random_value
 
 class CtrlEnv(gym.Env):
-    def __init__(self, x0 = random_value(3), ref = random_value(3), T=10):
+    def __init__(self, x0 = random_value(3), ref = 0, T=10):
     # def __init__(self, x0 = 0, ref = 1, T=10):
         super(CtrlEnv, self).__init__()
         self.mdel_param = {'m': 1, 'b':1, 'k':1}
@@ -39,7 +41,7 @@ class CtrlEnv(gym.Env):
         # self.steps_beyond_done = None
         self.epoch = 0
 
-    def reset(self, x0 = random_value(3), ref = random_value(3), T=10):
+    def reset(self, x0 = random_value(3), ref = 0, T=10):
     # def reset(self, x0 = 0, ref = 1, T=10):
         self.T = T
         self.x0 = x0
@@ -108,8 +110,10 @@ class CtrlEnv(gym.Env):
         return reward
 
     def done(self, x1, t):
-        # x_limit = bool( np.absolute(x1) > self.x_threshold)
-        x_limit = bool( np.absolute(self.get_error(x1)) > np.absolute(self.get_error(self.x0)*1.5))
+        # print(f't:{t} Ref:{self.ref}, x0:{self.x0}, xt:{x1}')
+        abs_error_x1 = np.abs(self.get_error(x1))
+        abs_error_x0 = np.abs(self.get_error(self.x0))
+        x_limit = bool( abs_error_x1 > max(abs_error_x0*1.5, 0.01))
         t_limit = bool( t > self.T)
         done = x_limit or t_limit
         return done, x_limit
@@ -123,8 +127,6 @@ class CtrlEnv(gym.Env):
                 'ref':self.ref,
                 'error': error,
                 'epoch': self.epoch,
-                # 'episode':{'r':reward,'l':self.epoch}}
-                # 'episode':{'r':3,'l':4}
                 }
         return info
 
