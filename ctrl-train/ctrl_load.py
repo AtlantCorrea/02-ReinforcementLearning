@@ -1,6 +1,3 @@
-from binascii import rlecode_hqx
-import random
-from weakref import ref
 import gym
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
 from ctrl_env.ctrl_env import CtrlEnv
@@ -9,10 +6,11 @@ import matplotlib.pyplot as plt
 env = CtrlEnv()
 env.reset()
 
+rl_folder = input('Folder:')
 rl_model = input("Modelo: ")
 rl_step = input("Step: ")
 
-models_dir = f'Jun25_models/{rl_model}'
+models_dir = f'{rl_folder}/{rl_model}'
 model_path = f'{models_dir}/{rl_step}.zip'
 
 if 'SAC' in rl_model:
@@ -38,7 +36,7 @@ for ep in range(-episides, episides+1):
     obs = env.reset(x0 = ep)
     # obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
     done = False
-    for i in range(100):
+    for i in range(250):
         action, _ = model.predict(obs)
         obs, reward, done, info = env.step(action)
     if done:
