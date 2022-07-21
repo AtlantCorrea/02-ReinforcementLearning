@@ -33,7 +33,7 @@ else:
 
 episides = 5
 for ep in range(-episides, episides+1):
-    obs = env.reset(x0 = ep)
+    obs = env.reset(ref = ep)
     # obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
     done = False
     for i in range(250):

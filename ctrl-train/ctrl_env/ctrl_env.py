@@ -16,18 +16,18 @@ def random_value(amplitud):
   return random_value
 
 class CtrlEnv(gym.Env):
-    def __init__(self, T=10, x0=None):
+    def __init__(self, T=10, ref=None):
     # def __init__(self, x0 = 0, ref = 1, T=10):
         super(CtrlEnv, self).__init__()
         self.mdel_param = {'m': 1, 'b':1, 'k':1}
         self.scale_action = 5
 
         self.T = T
-        if x0 is None:
-          self.x0 = random_value(3)
+        self.x0 = 0
+        if ref is None:
+          self.ref = random_value(3)
         else:
-          self.x0 = x0
-        self.ref = 0
+          self.ref = ref
         self.error = self.ref - self.x0
 
         self.x = np.array([[self.x0,0, self.ref]])
@@ -46,18 +46,18 @@ class CtrlEnv(gym.Env):
         # self.steps_beyond_done = None
         self.epoch = 0
 
-    def reset(self, T=10, x0=None):
+    def reset(self, T=10, ref=None):
     # def reset(self, x0 = random_value(3), ref = 0, T=10):
     # def reset(self, x0 = 0, ref = 1, T=10):
         
         self.T = T
-        if x0 is None:
-          self.x0 = random_value(3)
+        self.x0 = 0
+        if ref is None:
+          self.ref = random_value(3)
         else:
-          self.x0 = x0
-        self.ref = 0
+          self.ref = ref
         self.error = self.ref - self.x0
-        print(f'x0 actual: {self.x0}') 
+        print(f'ref actual: {self.ref}') 
 
         self.x = np.array([[self.x0,0, self.ref]])
         self.u = np.array([0])
