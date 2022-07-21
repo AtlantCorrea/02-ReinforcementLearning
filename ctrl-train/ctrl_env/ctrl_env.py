@@ -1,7 +1,9 @@
 import gym
 import numpy as np
+from time import time 
 from gym import logger
 from gym import spaces
+from random import random, seed
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import matplotlib.colors as mcolors
@@ -14,16 +16,19 @@ def random_value(amplitud):
   return random_value
 
 class CtrlEnv(gym.Env):
-    def __init__(self, x0 = random_value(3), ref = 0, T=10):
+    def __init__(self, T=10, x0=None):
     # def __init__(self, x0 = 0, ref = 1, T=10):
         super(CtrlEnv, self).__init__()
         self.mdel_param = {'m': 1, 'b':1, 'k':1}
         self.scale_action = 5
 
         self.T = T
-        self.x0 = x0
-        self.ref = ref
-        self.error = ref-x0
+        if x0 is None:
+          self.x0 = random_value(3)
+        else:
+          self.x0 = x0
+        self.ref = 0
+        self.error = self.ref - self.x0
 
         self.x = np.array([[self.x0,0, self.ref]])
         self.u = np.array([0])
@@ -41,12 +46,18 @@ class CtrlEnv(gym.Env):
         # self.steps_beyond_done = None
         self.epoch = 0
 
-    def reset(self, x0 = random_value(3), ref = 0, T=10):
+    def reset(self, T=10, x0=None):
+    # def reset(self, x0 = random_value(3), ref = 0, T=10):
     # def reset(self, x0 = 0, ref = 1, T=10):
+        
         self.T = T
-        self.x0 = x0
-        self.ref = ref
-        self.error = ref-x0
+        if x0 is None:
+          self.x0 = random_value(3)
+        else:
+          self.x0 = x0
+        self.ref = 0
+        self.error = self.ref - self.x0
+        print(f'x0 actual: {self.x0}') 
 
         self.x = np.array([[self.x0,0, self.ref]])
         self.u = np.array([0])
@@ -107,8 +118,8 @@ class CtrlEnv(gym.Env):
         return sol_array[-1]
 
     def reward(self, error, t):
-        reward = -np.absolute(error) * (1 + float(t/2)**1.2)
-        return reward
+      reward = -np.absolute(error) * (1 + float(t/2)**1.2)
+      return reward    
 
     def done(self, x1, t):
         # print(f't:{t} Ref:{self.ref}, x0:{self.x0}, xt:{x1}')
