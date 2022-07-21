@@ -31,7 +31,7 @@ else:
 # elif rl_model == 'ACKTR':
 #     model = ACKTR.load(model_path, env=env)
 
-episides = 2
+episides = 5
 for ep in range(-episides, episides+1):
     obs = env.reset(x0 = ep)
     # obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
