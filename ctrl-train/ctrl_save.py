@@ -43,7 +43,7 @@ else:
 
 
 TIMESTEPS = 10000
-for i in range(300):
+for i in range(30):
     model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=f'{rl_model}{n_stamp}')
     model.save(f'{models_dir}/{TIMESTEPS*i}')
     
