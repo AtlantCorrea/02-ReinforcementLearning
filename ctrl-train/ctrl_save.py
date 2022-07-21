@@ -5,14 +5,14 @@ from datetime import datetime
 from ctrl_env.ctrl_env import CtrlEnv
 
 now = datetime.now().strftime("%b%d")
-models_dir = f'{now}_models'
+models_dir = f'trains/{now}_models'
 if not os.path.exists(models_dir):
     os.makedirs(models_dir)
 
 rl_model = 'SAC'
 n_stamp = len(os.listdir(models_dir))
 models_dir = f'{models_dir}/{rl_model}{n_stamp}'
-logdir = f'{now}_logs'
+logdir = f'trains/{now}_logs'
 
 if not os.path.exists(models_dir):
     os.makedirs(models_dir)
