@@ -1,4 +1,5 @@
 import gym
+import numpy as np
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
 from ctrl_env.ctrl_env import CtrlEnv
 import matplotlib.pyplot as plt
@@ -31,7 +32,9 @@ else:
 # elif rl_model == 'ACKTR':
 #     model = ACKTR.load(model_path, env=env)
 
-episides = 5
+
+R = []
+episides = 2
 for ep in range(-episides, episides+1):
     obs = env.reset(ref = ep)
     # obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
@@ -39,8 +42,11 @@ for ep in range(-episides, episides+1):
     for i in range(250):
         action, _ = model.predict(obs)
         obs, reward, done, info = env.step(action)
+        R.append(reward)
     if done:
         # break
         pass
     env.render()
+    print(f'mean_rew: {np.mean(R)}')
+
     input('ok?')
