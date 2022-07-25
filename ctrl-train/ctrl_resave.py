@@ -11,6 +11,7 @@ env.reset()
 rl_folder = input('Folder:')
 rl_model = input("Modelo: ")
 rl_step = input("Step: ")
+save_description = input('Description: ')
 
 models_dir = f'{rl_folder}/{rl_model}'
 model_path = f'{models_dir}/{rl_step}.zip'
@@ -37,13 +38,13 @@ if not os.path.exists(f'{models_dir}_{start_step}k_r{n_stamp}'):
 
 
 TIMESTEPS = 10000
-model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{0}')
+model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{0 + int(rl_step)}')
 for i in range(30):
     model.learn(total_timesteps=TIMESTEPS, 
     reset_num_timesteps=False, 
-    tb_log_name=f'{rl_model}_r{n_stamp}')
+    tb_log_name=f'{rl_model}_{start_step}k_r{n_stamp}')
 
-    model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{TIMESTEPS*i}')
+    model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{TIMESTEPS*i + int(rl_step)}')
     
 env.close()
 
