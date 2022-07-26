@@ -57,7 +57,6 @@ class CtrlEnv(gym.Env):
         else:
           self.ref = ref
         self.error = self.ref - self.x0
-        print(f'ref actual: {self.ref}') 
 
         self.x = np.array([[self.x0,0, self.ref]])
         self.u = np.array([0])
