@@ -1,4 +1,5 @@
-import gym
+# import gym
+import parameters as p
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
 import os
 from datetime import datetime
@@ -14,7 +15,8 @@ rl_step = input("Step: ")
 description_txt = input('Description: ')
 
 models_dir = f'{rl_folder}/{rl_model}'
-model_path = f'{models_dir}/{rl_step}.zip'
+model_path = f'{models_dir}/{int(rl_step)-p.TIMESTEPS}.zip'
+print(model_path)
 
 if 'SAC' in rl_model:
     model = SAC.load(model_path, env=env)
@@ -32,25 +34,22 @@ else:
 
 n_stamp = len(os.listdir(rl_folder))
 start_step = int(rl_step)*1000//1000000
-print(f'{rl_step} → {start_step}')
 
 folder_path = f'{models_dir}_{start_step}k_r{n_stamp}'
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
 description_path = f'{models_dir}_{start_step}k_r{n_stamp}\Description.txt'
-print('→   ',description_path)
 with open(description_path, 'w') as f:
     f.write(description_txt)
 
-TIMESTEPS = 10000
 model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{0 + int(rl_step)}')
 for i in range(30):
-    model.learn(total_timesteps=TIMESTEPS, 
+    model.learn(total_timesteps=p.TIMESTEPS, 
     reset_num_timesteps=False, 
     tb_log_name=f'{rl_model}_{start_step}k_r{n_stamp}')
 
-    model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{TIMESTEPS*(i+1) + int(rl_step)}')
+    model.save(f'{models_dir}_{start_step}k_r{n_stamp}/{p.TIMESTEPS*(i+1) + int(rl_step)}')
     
 env.close()
 
