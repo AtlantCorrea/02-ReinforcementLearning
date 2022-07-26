@@ -10,3 +10,6 @@ __pycache__/
 # Loggs
 events.out.*
 *.zip
+
+# Descriptions
+Description.*
