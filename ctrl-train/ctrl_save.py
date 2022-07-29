@@ -4,6 +4,8 @@ import os
 from datetime import datetime
 from ctrl_env.ctrl_env import CtrlEnv
 
+
+
 now = datetime.now().strftime("%b%d")
 models_dir = f'trains/{now}_models'
 if not os.path.exists(models_dir):
@@ -19,6 +21,11 @@ if not os.path.exists(models_dir):
 
 if not os.path.exists(logdir):
     os.makedirs(logdir)
+
+description_txt = input('Description: ')
+description_path = f'{models_dir}\Description.txt'
+with open(description_path, 'w') as f:
+    f.write(description_txt)
 
 env = CtrlEnv()
 env.reset()
