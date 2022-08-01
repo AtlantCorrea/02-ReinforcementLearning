@@ -99,10 +99,11 @@ class CtrlEnv(gym.Env):
         self.epoch+=1
         return np.array(observation, dtype=np.float32), reward, done, info
 
-    def render(self):
+    def render(self,title = 'Test', ):
+      plt.rcParams['figure.figsize'] = [4,6]
       fig, ax = plt.subplots()
-      self.plot_info(ax, self.plot, 'Test', 'Time(s)', x_dot=False, error = False, u=False)
-      ax.set_ylim(-3,3)
+      self.plot_info(ax, self.plot, title, 'Time(s)', x_dot=False, error = False)
+      ax.set_ylim(-5,5)
       fig.tight_layout()
       fig.show()
 
@@ -121,12 +122,9 @@ class CtrlEnv(gym.Env):
       return reward    
 
     def done(self, x1, t):
-        # print(f't:{t} Ref:{self.ref}, x0:{self.x0}, xt:{x1}')
-        abs_error_x1 = np.abs(self.get_error(x1))
-        abs_error_x0 = np.abs(self.get_error(self.x0))
-        x_limit = bool( abs_error_x1 > max(abs_error_x0*1.5, 0.01))
         t_limit = bool( t > self.T)
-        done = x_limit or t_limit
+        done = t_limit
+        x_limit = False
         return done, x_limit
 
     def info(self, error, reward):
@@ -183,7 +181,11 @@ class CtrlEnv(gym.Env):
         
         ax.set_title(title)
         ax.set_xlabel(xlabel)
-        ax.legend(bbox_to_anchor=(1.04,1), borderaxespad=0)
+        # ax.legend(bbox_to_anchor=(1.04,1), borderaxespad=0)
+        # ax.legend(loc="upper right")
+        ax.legend(bbox_to_anchor=(0., 1.07, 1., .102), loc='lower left',
+           ncol=2, mode="expand", borderaxespad=0.)
+
         ax.grid()
         return ax
 

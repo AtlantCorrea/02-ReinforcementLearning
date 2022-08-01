@@ -1,4 +1,5 @@
 import gym
+import os
 import numpy as np
 from stable_baselines3 import  SAC, A2C, DDPG, PPO, TD3 #ACKRT, HER(HerReplayBuffer,), GAIL, TRPO
 from ctrl_env.ctrl_env import CtrlEnv
@@ -32,21 +33,30 @@ else:
 # elif rl_model == 'ACKTR':
 #     model = ACKTR.load(model_path, env=env)
 
+txt_d = ''
+if os.path.exists(f'{models_dir}\Description.txt'):
+    with open(f'{models_dir}\Description.txt') as f:
+        txt_d = f.readline()
 
-R = []
+print(f'\n\n'+'-'*10)
+print(f'Model: {rl_folder}\{rl_model}\{rl_step}.zip')        
+print(f"Descripcion: {txt_d}\n"+'-'*10)
+
 episides = 2
 for ep in range(-episides, episides+1):
+    r = []
     obs = env.reset(ref = ep)
     # obs = env.reset(x0= random.randint(-3,3), ref= random.randint(-3,3))
     done = False
     for i in range(250):
         action, _ = model.predict(obs)
         obs, reward, done, info = env.step(action)
-        R.append(reward)
+        r.append(reward)
     if done:
         # break
         pass
-    env.render()
-    print(f'mean_rew: {np.mean(R)}')
+    env.render(title=f'Ref={ep}')
+    input(f'Reference = {ep}\tmean_rew: {np.mean(r):.4}\t → ok?')
 
-    input('ok?')
+
+input('ok?')
