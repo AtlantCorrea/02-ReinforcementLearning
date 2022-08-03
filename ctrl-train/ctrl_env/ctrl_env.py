@@ -118,7 +118,8 @@ class CtrlEnv(gym.Env):
         return sol_array[-1]
 
     def reward(self, error, t):
-      reward = -np.absolute(error) * (1 + float(t/2)**1.2)
+      du = (np.abs(self.u[-1] - self.u[-2]))[0]
+      reward = -np.absolute(error) * (1 + float(t/2)**1.2) #* (du**2)
       return reward    
 
     def done(self, x1, t):
